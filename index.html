@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - HTML5 Gaming Portal</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --success-color: #00b894;
+            --danger-color: #d63031;
+            --warning-color: #fdcb6e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            display: flex;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .game-category {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .play-btn {
+            display: block;
+            text-align: center;
+            padding: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 5px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Admin Dashboard Styles */
+        .admin-panel {
+            display: none;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 15px 0;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            height: calc(100vh - 60px);
+            position: fixed;
+            padding: 20px 0;
+        }
+
+        .admin-sidebar ul {
+            list-style: none;
+        }
+
+        .admin-sidebar li a {
+            display: block;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .admin-sidebar li a:hover, .admin-sidebar li a.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-main {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .admin-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-card h2 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-title {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        /* Game Player Modal */
+        .game-player-modal {
+            display: none;
+        }
+
+        .game-player-content {
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .game-frame {
+            width: 100%;
+            height: calc(100% - 50px);
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-filter {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Website -->
+    <div id="main-website">
+        <header>
+            <div class="container header-content">
+                <a href="#" class="logo">GameHub</a>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Home</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="#">Popular</a></li>
+                        <li><a href="#" id="admin-login-btn">Admin Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for games...">
+                <button id="search-btn">Search</button>
+            </div>
+
+            <div class="category-filter" id="category-filter">
+                <!-- Categories will be added dynamically -->
+            </div>
+
+            <h2 class="section-title">Featured Games</h2>
+            <div class="game-grid" id="game-grid">
+                <!-- Games will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-panel" class="admin-panel">
+        <div class="admin-header">
+            <div class="container header-content">
+                <a href="#" class="logo">GameHub Admin</a>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="admin-logout-btn">Logout</a></li>
+                        <li><a href="#" id="back-to-site">Back to Site</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="admin-sidebar">
+            <ul>
+                <li><a href="#" class="active" data-section="dashboard">Dashboard</a></li>
+                <li><a href="#" data-section="games">Manage Games</a></li>
+                <li><a href="#" data-section="add-game">Add New Game</a></li>
+                <li><a href="#" data-section="categories">Manage Categories</a></li>
+            </ul>
+        </div>
+
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section">
+                <div class="admin-card">
+                    <h2>Dashboard</h2>
+                    <p>Welcome to the GameHub Admin Panel. Use the sidebar to manage games and categories.</p>
+                    <div id="stats-container" style="display: flex; gap: 20px; margin-top: 20px;">
+                        <div style="flex: 1; background: var(--primary-color); color: white; padding: 20px; border-radius: 8px;">
+                            <h3>Total Games</h3>
+                            <p id="total-games" style="font-size: 2rem; font-weight: bold;">0</p>
+                        </div>
+                        <div style="flex: 1; background: var(--success-color); color: white; padding: 20px; border-radius: 8px;">
+                            <h3>Categories</h3>
+                            <p id="total-categories" style="font-size: 2rem; font-weight: bold;">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Games Section -->
+            <div id="games-section" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h2>Manage Games</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="games-table-body">
+                            <!-- Games will be added dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Game Section -->
+            <div id="add-game-section" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h2>Add New Game</h2>
+                    <form id="add-game-form">
+                        <div class="form-group">
+                            <label for="game-title">Game Title</label>
+                            <input type="text" id="game-title" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="game-category">Category</label>
+                            <select id="game-category" class="form-control" required>
+                                <!-- Categories will be added dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="game-thumbnail">Thumbnail URL</label>
+                            <input type="url" id="game-thumbnail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Game Type</label>
+                            <div>
+                                <input type="radio" id="game-type-url" name="game-type" value="url" checked>
+                                <label for="game-type-url">Game URL</label>
+                                <input type="radio" id="game-type-iframe" name="game-type" value="iframe" style="margin-left: 15px;">
+                                <label for="game-type-iframe">Embed Code</label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="game-url-group">
+                            <label for="game-url">Game URL</label>
+                            <input type="url" id="game-url" class="form-control">
+                        </div>
+                        <div class="form-group" id="game-iframe-group" style="display: none;">
+                            <label for="game-iframe">Embed Code</label>
+                            <textarea id="game-iframe" class="form-control" placeholder="Paste iframe code here"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Game</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Manage Categories Section -->
+            <div id="categories-section" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h2>Manage Categories</h2>
+                    <form id="add-category-form" style="margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="new-category">Add New Category</label>
+                            <div style="display: flex;">
+                                <input type="text" id="new-category" class="form-control" style="flex: 1; margin-right: 10px;" required>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Category Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categories-table-body">
+                            <!-- Categories will be added dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Admin Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Game Player Modal -->
+    <div id="game-player-modal" class="modal game-player-modal">
+        <div class="game-player-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title" id="game-player-title">Playing Game</h2>
+            <iframe id="game-frame" class="game-frame" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Edit Game Modal -->
+    <div id="edit-game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Edit Game</h2>
+            <form id="edit-game-form">
+                <input type="hidden" id="edit-game-id">
+                <div class="form-group">
+                    <label for="edit-game-title">Game Title</label>
+                    <input type="text" id="edit-game-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-game-category">Category</label>
+                    <select id="edit-game-category" class="form-control" required>
+                        <!-- Categories will be added dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-game-thumbnail">Thumbnail URL</label>
+                    <input type="url" id="edit-game-thumbnail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Game Type</label>
+                    <div>
+                        <input type="radio" id="edit-game-type-url" name="edit-game-type" value="url" checked>
+                        <label for="edit-game-type-url">Game URL</label>
+                        <input type="radio" id="edit-game-type-iframe" name="edit-game-type" value="iframe" style="margin-left: 15px;">
+                        <label for="edit-game-type-iframe">Embed Code</label>
+                    </div>
+                </div>
+                <div class="form-group" id="edit-game-url-group">
+                    <label for="edit-game-url">Game URL</label>
+                    <input type="url" id="edit-game-url" class="form-control">
+                </div>
+                <div class="form-group" id="edit-game-iframe-group" style="display: none;">
+                    <label for="edit-game-iframe">Embed Code</label>
+                    <textarea id="edit-game-iframe" class="form-control" placeholder="Paste iframe code here"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Game Data Structure
+        const defaultGames = [
+            {
+                id: 1,
+                title: "2048 Puzzle",
+                category: "puzzle",
+                thumbnail: "https://via.placeholder.com/300x200?text=2048+Puzzle",
+                type: "url",
+                url: "https://play2048.co/"
+            },
+            {
+                id: 2,
+                title: "Flappy Bird",
+                category: "arcade",
+                thumbnail: "https://via.placeholder.com/300x200?text=Flappy+Bird",
+                type: "iframe",
+                iframe: '<iframe src="https://flappybird.io/" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>'
+            },
+            {
+                id: 3,
+                title: "Snake Game",
+                category: "arcade",
+                thumbnail: "https://via.placeholder.com/300x200?text=Snake+Game",
+                type: "url",
+                url: "https://playsnake.org/"
+            },
+            {
+                id: 4,
+                title: "Chess",
+                category: "strategy",
+                thumbnail: "https://via.placeholder.com/300x200?text=Chess",
+                type: "url",
+                url: "https://www.chess.com/play/computer"
+            }
+        ];
+
+        const defaultCategories = [
+            { id: "arcade", name: "Arcade" },
+            { id: "puzzle", name: "Puzzle" },
+            { id: "strategy", name: "Strategy" },
+            { id: "action", name: "Action" }
+        ];
+
+        // Initialize Data
+        let games = JSON.parse(localStorage.getItem('games')) || defaultGames;
+        let categories = JSON.parse(localStorage.getItem('categories')) || defaultCategories;
+        let currentCategoryFilter = 'all';
+        let currentSearchQuery = '';
+        let isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+
+        // DOM Elements
+        const mainWebsite = document.getElementById('main-website');
+        const adminPanel = document.getElementById('admin-panel');
+        const gameGrid = document.getElementById('game-grid');
+        const categoryFilter = document.getElementById('category-filter');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const loginModal = document.getElementById('login-modal');
+        const loginForm = document.getElementById('login-form');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminLogoutBtn = document.getElementById('admin-logout-btn');
+        const backToSiteBtn = document.getElementById('back-to-site');
+        const gamePlayerModal = document.getElementById('game-player-modal');
+        const gameFrame = document.getElementById('game-frame');
+        const gamePlayerTitle = document.getElementById('game-player-title');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+
+        // Admin Dashboard Elements
+        const adminSections = document.querySelectorAll('.admin-section');
+        const adminSidebarLinks = document.querySelectorAll('.admin-sidebar a');
+        const totalGamesEl = document.getElementById('total-games');
+        const totalCategoriesEl = document.getElementById('total-categories');
+        const gamesTableBody = document.getElementById('games-table-body');
+        const addGameForm = document.getElementById('add-game-form');
+        const gameCategorySelect = document.getElementById('game-category');
+        const gameTypeRadios = document.querySelectorAll('input[name="game-type"]');
+        const gameUrlGroup = document.getElementById('game-url-group');
+        const gameIframeGroup = document.getElementById('game-iframe-group');
+        const addCategoryForm = document.getElementById('add-category-form');
+        const categoriesTableBody = document.getElementById('categories-table-body');
+        const editGameModal = document.getElementById('edit-game-modal');
+        const editGameForm = document.getElementById('edit-game-form');
+
+        // Initialize the app
+        function init() {
+            renderGames();
+            renderCategories();
+            renderCategoryFilter();
+            updateAdminStats();
+            setupEventListeners();
+            
+            if (isAdminLoggedIn) {
+                showAdminPanel();
+            } else {
+                showMainWebsite();
+            }
+        }
+
+        // Render games to the grid
+        function renderGames() {
+            gameGrid.innerHTML = '';
+            
+            const filteredGames = games.filter(game => {
+                const matchesCategory = currentCategoryFilter === 'all' || game.category === currentCategoryFilter;
+                const matchesSearch = game.title.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+            
+            if (filteredGames.length === 0) {
+                gameGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No games found. Try a different search or category.</p>';
+                return;
+            }
+            
+            filteredGames.forEach(game => {
+                const categoryObj = categories.find(cat => cat.id === game.category);
+                const categoryName = categoryObj ? categoryObj.name : 'Uncategorized';
+                
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <img src="${game.thumbnail}" alt="${game.title}" class="game-thumbnail" onerror="this.src='https://via.placeholder.com/300x200?text=Game+Thumbnail'">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <span class="game-category">${categoryName}</span>
+                        <a href="#" class="play-btn" data-game-id="${game.id}">Play Now</a>
+                    </div>
+                `;
+                gameGrid.appendChild(gameCard);
+            });
+            
+            // Add event listeners to play buttons
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const gameId = parseInt(this.getAttribute('data-game-id'));
+                    playGame(gameId);
+                });
+            });
+        }
+
+        // Render categories to the filter
+        function renderCategoryFilter() {
+            categoryFilter.innerHTML = '';
+            
+            const allBtn = document.createElement('button');
+            allBtn.className = `category-btn ${currentCategoryFilter === 'all' ? 'active' : ''}`;
+            allBtn.textContent = 'All';
+            allBtn.addEventListener('click', () => {
+                currentCategoryFilter = 'all';
+                renderGames();
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                allBtn.classList.add('active');
+            });
+            categoryFilter.appendChild(allBtn);
+            
+            categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn ${currentCategoryFilter === category.id ? 'active' : ''}`;
+                btn.textContent = category.name;
+                btn.addEventListener('click', () => {
+                    currentCategoryFilter = category.id;
+                    renderGames();
+                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+                categoryFilter.appendChild(btn);
+            });
+        }
+
+        // Render categories to select dropdowns
+        function renderCategories() {
+            gameCategorySelect.innerHTML = '';
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                gameCategorySelect.appendChild(option);
+            });
+        }
+
+        // Play a game
+        function playGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            gamePlayerTitle.textContent = `Playing ${game.title}`;
+            
+            if (game.type === 'url') {
+                gameFrame.src = game.url;
+            } else if (game.type === 'iframe') {
+                gameFrame.srcdoc = game.iframe;
+            }
+            
+            showModal(gamePlayerModal);
+        }
+
+        // Show modal
+        function showModal(modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Hide modal
+        function hideModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset iframe when closing game player
+            if (modal === gamePlayerModal) {
+                gameFrame.src = '';
+                gameFrame.srcdoc = '';
+            }
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            mainWebsite.style.display = 'none';
+            adminPanel.style.display = 'block';
+            renderAdminGamesTable();
+            renderAdminCategoriesTable();
+        }
+
+        // Show main website
+        function showMainWebsite() {
+            mainWebsite.style.display = 'block';
+            adminPanel.style.display = 'none';
+        }
+
+        // Render games table in admin
+        function renderAdminGamesTable() {
+            gamesTableBody.innerHTML = '';
+            
+            games.forEach(game => {
+                const categoryObj = categories.find(cat => cat.id === game.category);
+                const categoryName = categoryObj ? categoryObj.name : 'Uncategorized';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${game.title}</td>
+                    <td>${categoryName}</td>
+                    <td>${game.type === 'url' ? 'URL' : 'Embed'}</td>
+                    <td>
+                        <button class="btn btn-secondary action-btn edit-game-btn" data-game-id="${game.id}">Edit</button>
+                        <button class="btn btn-danger action-btn delete-game-btn" data-game-id="${game.id}">Delete</button>
+                    </td>
+                `;
+                gamesTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.edit-game-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-game-id'));
+                    openEditGameModal(gameId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-game-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-game-id'));
+                    if (confirm('Are you sure you want to delete this game?')) {
+                        deleteGame(gameId);
+                    }
+                });
+            });
+        }
+
+        // Render categories table in admin
+        function renderAdminCategoriesTable() {
+            categoriesTableBody.innerHTML = '';
+            
+            categories.forEach(category => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${category.name}</td>
+                    <td>
+                        <button class="btn btn-danger action-btn delete-category-btn" data-category-id="${category.id}">Delete</button>
+                    </td>
+                `;
+                categoriesTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const categoryId = this.getAttribute('data-category-id');
+                    if (confirm('Are you sure you want to delete this category?')) {
+                        deleteCategory(categoryId);
+                    }
+                });
+            });
+        }
+
+        // Open edit game modal
+        function openEditGameModal(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            document.getElementById('edit-game-id').value = game.id;
+            document.getElementById('edit-game-title').value = game.title;
+            document.getElementById('edit-game-thumbnail').value = game.thumbnail;
+            
+            // Set category select
+            const editCategorySelect = document.getElementById('edit-game-category');
+            editCategorySelect.innerHTML = '';
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                option.selected = category.id === game.category;
+                editCategorySelect.appendChild(option);
+            });
+            
+            // Set game type
+            if (game.type === 'url') {
+                document.getElementById('edit-game-type-url').checked = true;
+                document.getElementById('edit-game-url').value = game.url;
+                document.getElementById('edit-game-url-group').style.display = 'block';
+                document.getElementById('edit-game-iframe-group').style.display = 'none';
+            } else {
+                document.getElementById('edit-game-type-iframe').checked = true;
+                document.getElementById('edit-game-iframe').value = game.iframe;
+                document.getElementById('edit-game-url-group').style.display = 'none';
+                document.getElementById('edit-game-iframe-group').style.display = 'block';
+            }
+            
+            showModal(editGameModal);
+        }
+
+        // Add a new game
+        function addGame(title, category, thumbnail, type, url, iframe) {
+            const newId = games.length > 0 ? Math.max(...games.map(g => g.id)) + 1 : 1;
+            const newGame = {
+                id: newId,
+                title,
+                category,
+                thumbnail,
+                type,
+                [type === 'url' ? 'url' : 'iframe']: type === 'url' ? url : iframe
+            };
+            
+            games.push(newGame);
+            saveGames();
+            renderGames();
+            renderAdminGamesTable();
+            updateAdminStats();
+        }
+
+        // Update a game
+        function updateGame(id, title, category, thumbnail, type, url, iframe) {
+            const gameIndex = games.findIndex(g => g.id === id);
+            if (gameIndex === -1) return;
+            
+            // Remove the old type property
+            const oldGame = games[gameIndex];
+            if (oldGame.type === 'url') {
+                delete oldGame.url;
+            } else {
+                delete oldGame.iframe;
+            }
+            
+            // Update with new data
+            games[gameIndex] = {
+                id,
+                title,
+                category,
+                thumbnail,
+                type,
+                [type === 'url' ? 'url' : 'iframe']: type === 'url' ? url : iframe
+            };
+            
+            saveGames();
+            renderGames();
+            renderAdminGamesTable();
+            updateAdminStats();
+        }
+
+        // Delete a game
+        function deleteGame(id) {
+            games = games.filter(game => game.id !== id);
+            saveGames();
+            renderGames();
+            renderAdminGamesTable();
+            updateAdminStats();
+        }
+
+        // Add a new category
+        function addCategory(name) {
+            const id = name.toLowerCase().replace(/\s+/g, '-');
+            
+            // Check if category already exists
+            if (categories.some(cat => cat.id === id)) {
+                alert('Category already exists!');
+                return;
+            }
+            
+            categories.push({ id, name });
+            saveCategories();
+            renderCategories();
+            renderCategoryFilter();
+            renderAdminCategoriesTable();
+            updateAdminStats();
+            
+            // Update category selects in forms
+            renderCategories();
+            const editCategorySelect = document.getElementById('edit-game-category');
+            if (editCategorySelect) {
+                renderCategories(); // This will update both selects since they share the same categories
+            }
+        }
+
+        // Delete a category
+        function deleteCategory(id) {
+            // Check if any games are using this category
+            const gamesUsingCategory = games.some(game => game.category === id);
+            if (gamesUsingCategory) {
+                alert('Cannot delete category because it is being used by one or more games.');
+                return;
+            }
+            
+            categories = categories.filter(cat => cat.id !== id);
+            saveCategories();
+            renderCategories();
+            renderCategoryFilter();
+            renderAdminCategoriesTable();
+            updateAdminStats();
+        }
+
+        // Save games to localStorage
+        function saveGames() {
+            localStorage.setItem('games', JSON.stringify(games));
+        }
+
+        // Save categories to localStorage
+        function saveCategories() {
+            localStorage.setItem('categories', JSON.stringify(categories));
+        }
+
+        // Update admin stats
+        function updateAdminStats() {
+            totalGamesEl.textContent = games.length;
+            totalCategoriesEl.textContent = categories.length;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            searchBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                currentSearchQuery = searchInput.value.trim();
+                renderGames();
+            });
+            
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    currentSearchQuery = searchInput.value.trim();
+                    renderGames();
+                }
+            });
+            
+            // Admin login/logout
+            adminLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal(loginModal);
+            });
+            
+            adminLogoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                isAdminLoggedIn = false;
+                localStorage.setItem('isAdminLoggedIn', 'false');
+                showMainWebsite();
+            });
+            
+            backToSiteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showMainWebsite();
+            });
+            
+            // Login form
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Mock login - in a real app, this would be a server-side check
+                if (username === 'admin' && password === 'admin123') {
+                    isAdminLoggedIn = true;
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    hideModal(loginModal);
+                    showAdminPanel();
+                } else {
+                    alert('Invalid username or password');
+                }
+            });
+            
+            // Close modals
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    hideModal(modal);
+                });
+            });
+            
+            // Click outside modal to close
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    hideModal(e.target);
+                }
+            });
+            
+            // Admin sidebar navigation
+            adminSidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    
+                    // Update active link
+                    adminSidebarLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected section
+                    adminSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById(sectionId).style.display = 'block';
+                });
+            });
+            
+            // Game type radio buttons
+            gameTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'url') {
+                        gameUrlGroup.style.display = 'block';
+                        gameIframeGroup.style.display = 'none';
+                    } else {
+                        gameUrlGroup.style.display = 'none';
+                        gameIframeGroup.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Edit game type radio buttons
+            document.querySelectorAll('input[name="edit-game-type"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'url') {
+                        document.getElementById('edit-game-url-group').style.display = 'block';
+                        document.getElementById('edit-game-iframe-group').style.display = 'none';
+                    } else {
+                        document.getElementById('edit-game-url-group').style.display = 'none';
+                        document.getElementById('edit-game-iframe-group').style.display = 'block';
+                    }
+                });
+            });
+            
+            // Add game form
+            addGameForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('game-title').value;
+                const category = document.getElementById('game-category').value;
+                const thumbnail = document.getElementById('game-thumbnail').value;
+                const type = document.querySelector('input[name="game-type"]:checked').value;
+                const url = type === 'url' ? document.getElementById('game-url').value : '';
+                const iframe = type === 'iframe' ? document.getElementById('game-iframe').value : '';
+                
+                addGame(title, category, thumbnail, type, url, iframe);
+                
+                // Reset form
+                this.reset();
+                gameUrlGroup.style.display = 'block';
+                gameIframeGroup.style.display = 'none';
+                document.getElementById('game-type-url').checked = true;
+            });
+            
+            // Edit game form
+            editGameForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const id = parseInt(document.getElementById('edit-game-id').value);
+                const title = document.getElementById('edit-game-title').value;
+                const category = document.getElementById('edit-game-category').value;
+                const thumbnail = document.getElementById('edit-game-thumbnail').value;
+                const type = document.querySelector('input[name="edit-game-type"]:checked').value;
+                const url = type === 'url' ? document.getElementById('edit-game-url').value : '';
+                const iframe = type === 'iframe' ? document.getElementById('edit-game-iframe').value : '';
+                
+                updateGame(id, title, category, thumbnail, type, url, iframe);
+                hideModal(editGameModal);
+            });
+            
+            // Add category form
+            addCategoryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('new-category').value.trim();
+                
+                if (name) {
+                    addCategory(name);
+                    this.reset();
+                }
+            });
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
